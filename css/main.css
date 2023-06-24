@@ -319,12 +319,11 @@ header {
 
 #color-picker {
   max-width: 100%;
-  width: 4000px;
   max-height: calc(100vh - 130px);
-  height: 4000px;
   display: inline-block;
   margin-top: 24px;
   border: solid 1px #636e72;
+  overflow: auto;
 }
 
 #colored-show-box {
@@ -444,12 +443,12 @@ header {
   100% { background-position: 0 0; }
 }
 /* ********************* */
-[active-tooltip] {
+[tooltip] {
   position: relative;
   cursor: default;
 }
-[active-tooltip]:not(:disabled):active::before {
-  content: attr(active-tooltip);
+[tooltip]:not(:disabled)::before {
+  content: attr(tooltip);
   text-transform: capitalize;
   font-size: 14px;
   text-align: center;
@@ -465,8 +464,9 @@ header {
   padding: 10px;
   color: #fff;
   z-index: 1;
+  animation: fade-in 300ms ease;
 }
-[active-tooltip]:not(:disabled):active::after {
+[tooltip]:not(:disabled)::after {
   content: '';
   position: absolute;
   display: block;
@@ -481,11 +481,11 @@ header {
   animation: fade-in 300ms ease;
   z-index: 1;
 }
-[active-tooltip][tooltip-position="bottom"]:active::before {
+[tooltip][tooltip-position="bottom"]::before {
   bottom: auto;
   top: calc(100% + 10px);
 }
-[active-tooltip][tooltip-position="bottom"]:active::after {
+[tooltip][tooltip-position="bottom"]::after {
   bottom: auto;
   top: calc(100% + 6px);
   border-color: transparent transparent rgba(39, 39, 39, 1);

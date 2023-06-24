@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getImgData = exports.rgb2hsl = void 0;
+exports.rgbToHex = exports.getImgData = exports.rgb2hsl = void 0;
 const rgb2hsl = (r, g, b) => {
     r /= 255;
     g /= 255;
@@ -40,4 +40,9 @@ const getImgData = (event, canvas) => {
     return { x, y, r, g, b };
 };
 exports.getImgData = getImgData;
+const rgbToHex = (r, g, b) => {
+    const int2hex = (num) => (Math.round(num) < 16 ? '0' : '') + Math.round(num).toString(16);
+    return `#${int2hex(r)}${int2hex(g)}${int2hex(b)}`;
+};
+exports.rgbToHex = rgbToHex;
 //# sourceMappingURL=utils.js.map

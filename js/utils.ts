@@ -41,3 +41,10 @@ export const getImgData = (event: MouseEvent, canvas: HTMLCanvasElement) => {
 
   return { x, y, r, g, b };
 }
+
+export const rgbToHex = (r: number, g: number, b: number): string => {
+  const int2hex = (num) =>
+    (Math.round(num) < 16 ? '0' : '') + Math.round(num).toString(16);
+
+  return `#${int2hex(r)}${int2hex(g)}${int2hex(b)}`;
+}

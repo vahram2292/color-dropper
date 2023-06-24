@@ -13,6 +13,10 @@ function _onImageLoad(
   canvas: HTMLCanvasElement,
   context: CanvasRenderingContext2D
 ): void {
+  let loadedImageWidth = img.width;
+  let loadedImageHeight = img.height;
+
+  [canvas.width, canvas.height] = [loadedImageWidth, loadedImageHeight];
   // get the scale
   // it is the min of the 2 ratios
   let scale_factor = Math.min(canvas.width/img.width, canvas.height/img.height);
