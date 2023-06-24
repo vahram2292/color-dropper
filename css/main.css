@@ -317,12 +317,17 @@ header {
   fill: #FFF;
 }
 
+main {
+  margin-top: 24px;
+  border: solid 1px #636e72;
+  padding: 4px;
+  border-radius: 2px;
+}
+
 #color-picker {
   max-width: 100%;
   max-height: calc(100vh - 130px);
   display: inline-block;
-  margin-top: 24px;
-  border: solid 1px #636e72;
   overflow: auto;
 }
 
@@ -421,7 +426,8 @@ header {
   background: transparent;
 }
 
-.glow-on-hover:hover:before {
+.glow-on-hover:hover:before,
+.glow-on-hover.active:before {
   opacity: 1;
 }
 

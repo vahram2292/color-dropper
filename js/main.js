@@ -4,6 +4,13 @@ const drawImage_1 = require("./drawImage");
 const updateColorShowBlock_1 = require("./updateColorShowBlock");
 const pickColor_1 = require("./pickColor");
 const renderPicker_1 = require("./renderPicker");
+// TODO: fix main (canvas) tooltip
+// TODO: add active state for pick button
+// TODO: create elements collection
+// TODO: refactor CSS
+// TODO: refactor HTML
+// TODO: refactor CodeBase (main.ts, go throw all files)
+// TODO: may be add footer
 function init() {
     const { container, text, colorShowBox, pickerButton, copyButton, } = _selectElements();
     const { canvas, circle, hexTextOnHover, } = _createElements();

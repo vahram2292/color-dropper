@@ -3,6 +3,15 @@ import updateColorShowBlock from './updateColorShowBlock';
 import pickColor from './pickColor';
 import renderPicker from './renderPicker';
 
+
+// TODO: fix main (canvas) tooltip
+// TODO: add active state for pick button
+// TODO: create elements collection
+// TODO: refactor CSS
+// TODO: refactor HTML
+// TODO: refactor CodeBase (main.ts, go throw all files)
+// TODO: may be add footer
+
 function init() {
   const {
     container,
