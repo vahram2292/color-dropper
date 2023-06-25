@@ -6,7 +6,6 @@ const pickColor_1 = require("./pickColor");
 const renderPicker_1 = require("./renderPicker");
 const copyText_1 = require("./copyText");
 // TODO: 1 add image zooming functionality
-// TODO: 2 check responsiveness and proper functionality work for mobile
 // TODO: 3 may be add general listener
 // export const addListener = (element: HTMLElement, eventType: string, listener: (e?: Event) => void): () => void => {
 //   element.addEventListener(eventType, listener);
