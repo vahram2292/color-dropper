@@ -117,18 +117,28 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"js/drawImage.js":[function(require,module,exports) {
+})({"js/constants.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CIRCLE_WIDTH_HALF = void 0;
+exports.CIRCLE_WIDTH_HALF = 42;
+},{}],"js/drawImage.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var constants_1 = require("./constants");
+
 function drawImage(canvas) {
   if (canvas.getContext) {
     var context = canvas.getContext('2d');
     var img = new Image();
-    img.src = 'bg.jpg';
+    img.src = 'source.jpg';
 
     img.onload = function () {
       return _onImageLoad(img, canvas, context);
@@ -139,17 +149,17 @@ function drawImage(canvas) {
 function _onImageLoad(img, canvas, context) {
   var loadedImageWidth = img.width;
   var loadedImageHeight = img.height;
-  var _ref = [loadedImageWidth + 88, loadedImageHeight + 132];
+  var _ref = [loadedImageWidth + 2 * constants_1.CIRCLE_WIDTH_HALF, loadedImageHeight + 3.5 * constants_1.CIRCLE_WIDTH_HALF];
   canvas.width = _ref[0];
   canvas.height = _ref[1];
   // get the top left position of the image in order to center the image within the canvas
-  var x = canvas.width / 2 - img.width / 2;
-  var y = canvas.height / 2 - img.height / 2;
+  var x = (canvas.width + img.width) / 2;
+  var y = (canvas.height + img.height) / 2;
   context.drawImage(img, x, y, img.width, img.height);
 }
 
 exports.default = drawImage;
-},{}],"js/utils.js":[function(require,module,exports) {
+},{"./constants":"js/constants.js"}],"js/utils.js":[function(require,module,exports) {
 "use strict";
 
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
@@ -247,7 +257,16 @@ var createTimeout = function createTimeout(listener) {
   };
 };
 
-exports.createTimeout = createTimeout;
+exports.createTimeout = createTimeout; // TODO: may be add general listener
+// export const addListener = selector => eventType => listener => {
+//   let element = document.querySelector(selector)
+//   element.addEventListener(eventType, listener)
+//
+//   return () => {
+//     element.removeEventListener(eventType, listener)
+//   }
+// }
+// TODO: may be add general style function for element
 },{}],"js/colorSelected.js":[function(require,module,exports) {
 "use strict";
 
@@ -344,6 +363,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var utils_1 = require("./utils");
 
+var constants_1 = require("./constants");
+
 function renderPicker(event, _ref) {
   var canvas = _ref.canvas,
       circle = _ref.circle,
@@ -358,15 +379,15 @@ function renderPicker(event, _ref) {
 
   hexTextOnHover.innerText = (0, utils_1.rgbToHex)(r, g, b);
   hexTextOnHover.style.opacity = '1';
-  hexTextOnHover.style.top = y - 72 + 'px';
-  hexTextOnHover.style.left = x - 42 + 'px';
-  circle.style.top = y - 42 + 'px';
-  circle.style.left = x - 42 + 'px';
+  hexTextOnHover.style.top = y - (constants_1.CIRCLE_WIDTH_HALF + 30) + 'px';
+  hexTextOnHover.style.left = x - constants_1.CIRCLE_WIDTH_HALF + 'px';
+  circle.style.top = y - constants_1.CIRCLE_WIDTH_HALF + 'px';
+  circle.style.left = x - constants_1.CIRCLE_WIDTH_HALF + 'px';
   circle.style.borderColor = "rgb(".concat(r, ", ").concat(g, ", ").concat(b, ")");
 }
 
 exports.default = renderPicker;
-},{"./utils":"js/utils.js"}],"js/copyText.js":[function(require,module,exports) {
+},{"./utils":"js/utils.js","./constants":"js/constants.js"}],"js/copyText.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -411,7 +432,9 @@ var pickColor_1 = require("./pickColor");
 
 var renderPicker_1 = require("./renderPicker");
 
-var copyText_1 = require("./copyText");
+var copyText_1 = require("./copyText"); // TODO: refactor main ts file
+// TODO: add responsiveness and proper functionality work for mobile
+
 
 function init() {
   var allElements = Object.assign(Object.assign({}, _selectElements()), _createElements());
@@ -430,8 +453,6 @@ function init() {
     return (0, renderPicker_1.default)(e, allElements);
   };
 
-  container.style.position = 'relative';
-  circle.classList.add('circle');
   container.appendChild(circle);
   container.appendChild(hexTextOnHover);
   container.appendChild(canvas);
@@ -441,11 +462,10 @@ function init() {
   copyButton.addEventListener('click', function () {
     return (0, copyText_1.default)(allElements);
   });
-  canvas.addEventListener('color-selected', function () {
-    return _stopColorPicking(mouseMoveListener, clickListener, allElements);
-  });
   canvas.addEventListener('color-selected', function (e) {
-    return (0, colorSelected_1.default)(e, allElements);
+    (0, colorSelected_1.default)(e, allElements);
+
+    _stopColorPicking(mouseMoveListener, clickListener, allElements);
   });
   (0, drawImage_1.default)(canvas);
 }
@@ -458,6 +478,7 @@ function _selectElements() {
   var copyBtnShowBox = document.querySelector('.btn-copy-color-show-box');
   var copyButton = document.querySelector('.btn-copy');
   var mainTag = document.querySelector('main');
+  container.style.position = 'relative';
 
   if (copyBtnText === null || copyBtnText === void 0 ? void 0 : copyBtnText.innerText) {
     copyButton.disabled = true;
@@ -478,6 +499,7 @@ function _createElements() {
   var canvas = document.createElement('canvas');
   var circle = document.createElement('div');
   var hexTextOnHover = document.createElement('span');
+  circle.classList.add('circle');
   hexTextOnHover.classList.add('text');
   return {
     canvas: canvas,
@@ -531,7 +553,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55398" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57223" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

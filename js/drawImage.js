@@ -12,10 +12,10 @@ function drawImage(canvas) {
 function _onImageLoad(img, canvas, context) {
     let loadedImageWidth = img.width;
     let loadedImageHeight = img.height;
-    [canvas.width, canvas.height] = [loadedImageWidth + (2 * constants_1.CIRCLE_WIDTH_HALF), loadedImageHeight + (3.5 * constants_1.CIRCLE_WIDTH_HALF)];
+    [canvas.width, canvas.height] = [loadedImageWidth + (2 * constants_1.CIRCLE_WIDTH_HALF), loadedImageHeight + (3 * constants_1.CIRCLE_WIDTH_HALF)];
     // get the top left position of the image in order to center the image within the canvas
-    let x = (canvas.width + img.width) / 2;
-    let y = (canvas.height + img.height) / 2;
+    let x = (canvas.width / 2) - (img.width / 2);
+    let y = (canvas.height / 2) - (img.height / 2);
     context.drawImage(img, x, y, img.width, img.height);
 }
 exports.default = drawImage;
