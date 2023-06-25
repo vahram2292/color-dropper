@@ -404,7 +404,7 @@ main {
   overflow: auto;
 }
 
-#colored-show-box {
+.btn-copy-color-show-box {
   height: 24px;
   width: 24px;
   border-radius: 2px;
