@@ -30,7 +30,8 @@ export const rgb2hsl = (r: number, g: number, b: number): [h: number, s: number,
   return [h, s, l];
 }
 
-export const getImgData = (event: MouseEvent, canvas: HTMLCanvasElement) => {
+export const getImgData = (event: MouseEvent, canvas: HTMLCanvasElement):
+  { x: number, y: number, r: number, g:number, b:number } => {
   const rect = (event.target as Element).getBoundingClientRect();
   const x = event.clientX - rect.left;
   const y = event.clientY - rect.top;
@@ -49,22 +50,10 @@ export const rgbToHex = (r: number, g: number, b: number): string => {
   return `#${int2hex(r)}${int2hex(g)}${int2hex(b)}`;
 }
 
-export const createTimeout = listener => {
-  let id = setTimeout(listener, 700)
+export const createTimeout = (listener: () => void): () => void => {
+  let id = setTimeout(listener, 700);
 
-  return () => {
-    clearTimeout(id)
+  return (): void => {
+    clearTimeout(id);
   }
 }
-
-// TODO: may be add general listener
-// export const addListener = selector => eventType => listener => {
-//   let element = document.querySelector(selector)
-//   element.addEventListener(eventType, listener)
-//
-//   return () => {
-//     element.removeEventListener(eventType, listener)
-//   }
-// }
-
-// TODO: may be add general style function for element

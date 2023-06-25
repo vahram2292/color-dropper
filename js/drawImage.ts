@@ -1,6 +1,7 @@
 import { CIRCLE_WIDTH_HALF } from './constants';
+import { AllElements } from './interfaces';
 
-function drawImage(canvas: HTMLCanvasElement): void {
+function drawImage({ canvas }: AllElements): void {
   if (canvas.getContext) {
     const context = canvas.getContext('2d');
     const img = new Image();

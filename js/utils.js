@@ -45,21 +45,11 @@ const rgbToHex = (r, g, b) => {
     return `#${int2hex(r)}${int2hex(g)}${int2hex(b)}`;
 };
 exports.rgbToHex = rgbToHex;
-const createTimeout = listener => {
+const createTimeout = (listener) => {
     let id = setTimeout(listener, 700);
     return () => {
         clearTimeout(id);
     };
 };
 exports.createTimeout = createTimeout;
-// TODO: may be add general listener
-// export const addListener = selector => eventType => listener => {
-//   let element = document.querySelector(selector)
-//   element.addEventListener(eventType, listener)
-//
-//   return () => {
-//     element.removeEventListener(eventType, listener)
-//   }
-// }
-// TODO: may be add general style function for element
 //# sourceMappingURL=utils.js.map

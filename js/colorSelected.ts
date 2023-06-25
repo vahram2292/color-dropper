@@ -12,10 +12,9 @@ function colorSelected(
   copyBtnText.innerHTML = hexText;
   copyBtnShowBox.style.backgroundColor = hexText;
   circle.style.borderColor = 'transparent';
-  copyButton.removeAttribute('disabled');
   hexTextOnHover.style.opacity = '0';
   hexTextOnHover.style.backgroundColor = '#dfe6e9';
-
+  copyButton.removeAttribute('disabled');
   mainTag.setAttribute('tooltip', 'Color picked!');
 
   const mainTagTimeout = createTimeout(() => {

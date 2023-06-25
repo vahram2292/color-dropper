@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./constants");
-function drawImage(canvas) {
+function drawImage({ canvas }) {
     if (canvas.getContext) {
         const context = canvas.getContext('2d');
         const img = new Image();

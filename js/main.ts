@@ -6,9 +6,17 @@ import copyText from './copyText';
 
 import { AllElements } from './interfaces';
 
+// TODO: 1 add image zooming functionality
+// TODO: 2 check responsiveness and proper functionality work for mobile
+// TODO: 3 may be add general listener
+// export const addListener = (element: HTMLElement, eventType: string, listener: (e?: Event) => void): () => void => {
+//   element.addEventListener(eventType, listener);
+//
+//   return (): void => {
+//     element.removeEventListener(eventType, listener);
+//   }
+// }
 
-// TODO: refactor main ts file
-// TODO: add responsiveness and proper functionality work for mobile
 function init() {
   const allElements: AllElements = {
     ...(_selectElements()),
@@ -19,27 +27,15 @@ function init() {
     circle,
     canvas,
     hexTextOnHover,
-    copyButton,
-    pickerBtn,
   } = allElements;
-
-
-  const clickListener = (e: MouseEvent) => pickColor(e, allElements);
-  const mouseMoveListener = (e: MouseEvent) => renderPicker(e, allElements);
-
 
   container.appendChild(circle);
   container.appendChild(hexTextOnHover);
   container.appendChild(canvas);
 
-  pickerBtn.addEventListener('click', () => _startColorPicking(mouseMoveListener, clickListener, allElements))
-  copyButton.addEventListener('click', () => copyText(allElements))
-  canvas.addEventListener('color-selected', (e: CustomEvent) => {
-    colorSelected(e, allElements);
-    _stopColorPicking(mouseMoveListener, clickListener, allElements);
-  });
+  _setListeners(allElements);
 
-  drawImage(canvas);
+  drawImage(allElements);
 }
 
 function _selectElements(): {
@@ -83,6 +79,27 @@ function _createElements(): {
   return { canvas, circle, hexTextOnHover };
 }
 
+function _setListeners(allElements: AllElements): void {
+  const { pickerBtn, copyButton, canvas } = allElements;
+  const clickListener = (e: MouseEvent) => pickColor(e, allElements);
+  const mouseMoveListener = (e: MouseEvent) => renderPicker(e, allElements);
+
+  pickerBtn.addEventListener(
+    'click',
+    () => _startColorPicking(mouseMoveListener, clickListener, allElements)
+  );
+  copyButton.addEventListener(
+    'click',
+    () => copyText(allElements)
+  );
+  canvas.addEventListener(
+    'color-selected',
+    (e: CustomEvent) => {
+      _stopColorPicking(mouseMoveListener, clickListener, e, allElements);
+    }
+  );
+}
+
 function _startColorPicking(
   mouseMoveListener: (e: MouseEvent) => void,
   clickListener: (e: MouseEvent) => void,
@@ -97,12 +114,17 @@ function _startColorPicking(
 function _stopColorPicking(
   mouseMoveListener: (e: MouseEvent) => void,
   clickListener: (e: MouseEvent) => void,
-  { canvas, pickerBtnGlow }: AllElements,
+  customEvent: CustomEvent,
+  allElements: AllElements,
 ): void {
+  const { canvas, pickerBtnGlow } = allElements;
+
   canvas.removeEventListener('mousemove', mouseMoveListener);
   canvas.removeEventListener('click', clickListener);
 
   pickerBtnGlow.classList.remove('active');
+
+  colorSelected(customEvent, allElements);
 }
 
 init();
