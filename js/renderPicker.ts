@@ -10,7 +10,6 @@ function renderPicker(
 
   hexTextOnHover.innerText = rgbToHex(r, g, b);
   hexTextOnHover.style.opacity = '1';
-
   hexTextOnHover.style.top = y - 72 + 'px';
   hexTextOnHover.style.left = x - 42 + 'px';
   circle.style.top = y - 42 + 'px';

@@ -5,10 +5,6 @@ const colorSelected_1 = require("./colorSelected");
 const pickColor_1 = require("./pickColor");
 const renderPicker_1 = require("./renderPicker");
 const copyText_1 = require("./copyText");
-// TODO: refactor CSS
-// TODO: refactor CodeBase (main.ts, go throw all files)
-// TODO: may be add footer
-// TODO: may be add general listener
 function init() {
     const allElements = Object.assign(Object.assign({}, (_selectElements())), (_createElements()));
     const { container, circle, canvas, hexTextOnHover, copyButton, pickerBtn, } = allElements;

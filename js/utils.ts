@@ -56,13 +56,3 @@ export const createTimeout = listener => {
     clearTimeout(id)
   }
 }
-
-// TODO: may be add general listener
-// export const addListener = selector => eventType => listener => {
-//   let element = document.querySelector(selector)
-//   element.addEventListener(eventType, listener)
-//
-//   return () => {
-//     element.removeEventListener(eventType, listener)
-//   }
-// }

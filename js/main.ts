@@ -6,11 +6,6 @@ import copyText from './copyText';
 
 import { AllElements } from './interfaces';
 
-// TODO: refactor CSS
-// TODO: refactor CodeBase (main.ts, go throw all files)
-// TODO: may be add footer
-// TODO: may be add general listener
-
 function init() {
   const allElements: AllElements = {
     ...(_selectElements()),
@@ -83,8 +78,8 @@ function _createElements(): {
 }
 
 function _startColorPicking(
-  mouseMoveListener,
-  clickListener,
+  mouseMoveListener: (e: MouseEvent) => void,
+  clickListener: (e: MouseEvent) => void,
   { canvas, pickerBtnGlow }: AllElements,
 ): void {
   canvas.addEventListener('click', clickListener);
@@ -94,8 +89,8 @@ function _startColorPicking(
 }
 
 function _stopColorPicking(
-  mouseMoveListener,
-  clickListener,
+  mouseMoveListener: (e: MouseEvent) => void,
+  clickListener: (e: MouseEvent) => void,
   { canvas, pickerBtnGlow }: AllElements,
 ): void {
   canvas.removeEventListener('mousemove', mouseMoveListener);
