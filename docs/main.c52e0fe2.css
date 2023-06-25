@@ -399,7 +399,7 @@ main {
 
 .color-picker-wrapper {
   max-width: 100%;
-  max-height: calc(100vh - 184px);
+  max-height: calc(100svh - 184px);
   display: inline-block;
   overflow: auto;
 }
