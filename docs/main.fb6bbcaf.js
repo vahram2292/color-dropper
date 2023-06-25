@@ -134,7 +134,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var constants_1 = require("./constants");
 
-function drawImage(canvas) {
+function drawImage(_ref) {
+  var canvas = _ref.canvas;
+
   if (canvas.getContext) {
     var context = canvas.getContext('2d');
     var img = new Image();
@@ -149,12 +151,12 @@ function drawImage(canvas) {
 function _onImageLoad(img, canvas, context) {
   var loadedImageWidth = img.width;
   var loadedImageHeight = img.height;
-  var _ref = [loadedImageWidth + 2 * constants_1.CIRCLE_WIDTH_HALF, loadedImageHeight + 3.5 * constants_1.CIRCLE_WIDTH_HALF];
-  canvas.width = _ref[0];
-  canvas.height = _ref[1];
+  var _ref2 = [loadedImageWidth + 2 * constants_1.CIRCLE_WIDTH_HALF, loadedImageHeight + 3 * constants_1.CIRCLE_WIDTH_HALF];
+  canvas.width = _ref2[0];
+  canvas.height = _ref2[1];
   // get the top left position of the image in order to center the image within the canvas
-  var x = (canvas.width + img.width) / 2;
-  var y = (canvas.height + img.height) / 2;
+  var x = canvas.width / 2 - img.width / 2;
+  var y = canvas.height / 2 - img.height / 2;
   context.drawImage(img, x, y, img.width, img.height);
 }
 
@@ -257,16 +259,7 @@ var createTimeout = function createTimeout(listener) {
   };
 };
 
-exports.createTimeout = createTimeout; // TODO: may be add general listener
-// export const addListener = selector => eventType => listener => {
-//   let element = document.querySelector(selector)
-//   element.addEventListener(eventType, listener)
-//
-//   return () => {
-//     element.removeEventListener(eventType, listener)
-//   }
-// }
-// TODO: may be add general style function for element
+exports.createTimeout = createTimeout;
 },{}],"js/colorSelected.js":[function(require,module,exports) {
 "use strict";
 
@@ -291,9 +284,9 @@ function colorSelected(event, _ref) {
   copyBtnText.innerHTML = hexText;
   copyBtnShowBox.style.backgroundColor = hexText;
   circle.style.borderColor = 'transparent';
-  copyButton.removeAttribute('disabled');
   hexTextOnHover.style.opacity = '0';
   hexTextOnHover.style.backgroundColor = '#dfe6e9';
+  copyButton.removeAttribute('disabled');
   mainTag.setAttribute('tooltip', 'Color picked!');
   var mainTagTimeout = (0, utils_1.createTimeout)(function () {
     mainTag.removeAttribute('tooltip');
@@ -432,8 +425,16 @@ var pickColor_1 = require("./pickColor");
 
 var renderPicker_1 = require("./renderPicker");
 
-var copyText_1 = require("./copyText"); // TODO: refactor main ts file
-// TODO: add responsiveness and proper functionality work for mobile
+var copyText_1 = require("./copyText"); // TODO: 1 add image zooming functionality
+// TODO: 2 check responsiveness and proper functionality work for mobile
+// TODO: 3 may be add general listener
+// export const addListener = (element: HTMLElement, eventType: string, listener: (e?: Event) => void): () => void => {
+//   element.addEventListener(eventType, listener);
+//
+//   return (): void => {
+//     element.removeEventListener(eventType, listener);
+//   }
+// }
 
 
 function init() {
@@ -441,33 +442,14 @@ function init() {
   var container = allElements.container,
       circle = allElements.circle,
       canvas = allElements.canvas,
-      hexTextOnHover = allElements.hexTextOnHover,
-      copyButton = allElements.copyButton,
-      pickerBtn = allElements.pickerBtn;
-
-  var clickListener = function clickListener(e) {
-    return (0, pickColor_1.default)(e, allElements);
-  };
-
-  var mouseMoveListener = function mouseMoveListener(e) {
-    return (0, renderPicker_1.default)(e, allElements);
-  };
-
+      hexTextOnHover = allElements.hexTextOnHover;
   container.appendChild(circle);
   container.appendChild(hexTextOnHover);
   container.appendChild(canvas);
-  pickerBtn.addEventListener('click', function () {
-    return _startColorPicking(mouseMoveListener, clickListener, allElements);
-  });
-  copyButton.addEventListener('click', function () {
-    return (0, copyText_1.default)(allElements);
-  });
-  canvas.addEventListener('color-selected', function (e) {
-    (0, colorSelected_1.default)(e, allElements);
 
-    _stopColorPicking(mouseMoveListener, clickListener, allElements);
-  });
-  (0, drawImage_1.default)(canvas);
+  _setListeners(allElements);
+
+  (0, drawImage_1.default)(allElements);
 }
 
 function _selectElements() {
@@ -508,6 +490,30 @@ function _createElements() {
   };
 }
 
+function _setListeners(allElements) {
+  var pickerBtn = allElements.pickerBtn,
+      copyButton = allElements.copyButton,
+      canvas = allElements.canvas;
+
+  var clickListener = function clickListener(e) {
+    return (0, pickColor_1.default)(e, allElements);
+  };
+
+  var mouseMoveListener = function mouseMoveListener(e) {
+    return (0, renderPicker_1.default)(e, allElements);
+  };
+
+  pickerBtn.addEventListener('click', function () {
+    return _startColorPicking(mouseMoveListener, clickListener, allElements);
+  });
+  copyButton.addEventListener('click', function () {
+    return (0, copyText_1.default)(allElements);
+  });
+  canvas.addEventListener('color-selected', function (e) {
+    _stopColorPicking(mouseMoveListener, clickListener, e, allElements);
+  });
+}
+
 function _startColorPicking(mouseMoveListener, clickListener, _ref) {
   var canvas = _ref.canvas,
       pickerBtnGlow = _ref.pickerBtnGlow;
@@ -516,12 +522,13 @@ function _startColorPicking(mouseMoveListener, clickListener, _ref) {
   pickerBtnGlow.classList.add('active');
 }
 
-function _stopColorPicking(mouseMoveListener, clickListener, _ref2) {
-  var canvas = _ref2.canvas,
-      pickerBtnGlow = _ref2.pickerBtnGlow;
+function _stopColorPicking(mouseMoveListener, clickListener, customEvent, allElements) {
+  var canvas = allElements.canvas,
+      pickerBtnGlow = allElements.pickerBtnGlow;
   canvas.removeEventListener('mousemove', mouseMoveListener);
   canvas.removeEventListener('click', clickListener);
   pickerBtnGlow.classList.remove('active');
+  (0, colorSelected_1.default)(customEvent, allElements);
 }
 
 init();
@@ -553,7 +560,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57223" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51634" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
