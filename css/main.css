@@ -262,6 +262,8 @@ textarea {
   }
 }
 
+/* Application styles start */
+
 body {
   padding: 16px 32px;
   background: #2d3436;
@@ -274,122 +276,7 @@ header {
   padding: 16px 0;
 }
 
-.btn {
-  text-decoration: none;
-  color: #FFF;
-  width: 80px;
-  height: 40px;
-  background-image: linear-gradient(90deg, #0984e3 0%, #fdcb6e 49%, #d63031 80%, #0984e3 100%);
-  border-radius: 2px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-transform: uppercase;
-  font-weight: bold;
-  position: relative;
-  border: none;
-}
-
-.btn:after {
-  content: '';
-  width: 72px;
-  height: 32px;
-  background-color: #2d3436;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-}
-
-.btn:hover {
-  cursor: pointer;
-  animation: slidebg 2s linear infinite;
-}
-
-@keyframes slidebg {
-  to {
-    background-position: 80px;
-  }
-}
-
-.btn > svg {
-  position: absolute;
-  fill: #FFF;
-}
-
-main {
-  margin-top: 24px;
-  border: solid 1px #636e72;
-  padding: 4px;
-  border-radius: 2px;
-}
-
-#color-picker {
-  max-width: 100%;
-  max-height: calc(100vh - 130px);
-  display: inline-block;
-  overflow: auto;
-}
-
-#colored-show-box {
-  height: 24px;
-  width: 24px;
-  border-radius: 2px;
-  display: inline-block;
-}
-
-#show-box-wrapper {
-  position: relative;
-  height: 40px;
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #b2bec3;
-  border-radius: 2px;
-  padding: 0 12px;
-  text-transform: uppercase;
-  border: none;
-  transition: all 0.3s;
-}
-
-#text {
-  display: inline-block;
-  margin: 0 12px;
-  width: 68px;
-}
-
-#show-box-wrapper:hover:not(:disabled) {
-  cursor: pointer;
-}
-
-#show-box-wrapper:disabled svg {
-  fill: rgba(16, 16, 16, 0.3);
-}
-
-#show-box-wrapper:hover:disabled {
-  cursor: not-allowed;
-}
-
-#show-box-wrapper:active {
-  top: 2px;
-}
-
-
-.circle {
-  border: 8px solid transparent;
-  border-radius: 50%;
-  width: 84px;
-  height: 84px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  box-sizing: border-box;
-}
-
-
-/* ********************* */
-.glow-on-hover {
+.btn-picker-glow {
   width: 80px;
   height: 40px;
   border: none;
@@ -401,7 +288,7 @@ main {
   border-radius: 10px;
 }
 
-.glow-on-hover:before {
+.btn-picker-glow:before {
   content: '';
   background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
   position: absolute;
@@ -418,20 +305,20 @@ main {
   border-radius: 10px;
 }
 
-.glow-on-hover:active {
+.btn-picker-glow:active {
   color: #000
 }
 
-.glow-on-hover:active:after {
+.btn-picker-glow:active:after {
   background: transparent;
 }
 
-.glow-on-hover:hover:before,
-.glow-on-hover.active:before {
+.btn-picker-glow:hover:before,
+.btn-picker-glow.active:before {
   opacity: 1;
 }
 
-.glow-on-hover:after {
+.btn-picker-glow:after {
   z-index: -1;
   content: '';
   position: absolute;
@@ -448,11 +335,139 @@ main {
   50% { background-position: 400% 0; }
   100% { background-position: 0 0; }
 }
-/* ********************* */
+
+.btn-picker {
+  text-decoration: none;
+  color: #FFF;
+  width: 80px;
+  height: 40px;
+  background-image: linear-gradient(90deg, #0984e3 0%, #fdcb6e 49%, #d63031 80%, #0984e3 100%);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+  border: none;
+}
+
+.btn-picker:after {
+  content: '';
+  width: 72px;
+  height: 32px;
+  background-color: #2d3436;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+}
+
+.btn-picker:hover {
+  cursor: pointer;
+  animation: slidebg 2s linear infinite;
+}
+
+.btn-picker-icon {
+  position: absolute;
+  fill: #FFF;
+}
+
+@keyframes slidebg {
+  to {
+    background-position: 80px;
+  }
+}
+
+main {
+  margin-top: 24px;
+  border: solid 1px #636e72;
+  padding: 4px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.color-picker-wrapper {
+  max-width: 100%;
+  max-height: calc(100vh - 144px);
+  display: inline-block;
+  overflow: auto;
+}
+
+#colored-show-box {
+  height: 24px;
+  width: 24px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.btn-copy {
+  position: relative;
+  height: 40px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #b2bec3;
+  border-radius: 2px;
+  padding: 0 12px;
+  text-transform: uppercase;
+  border: none;
+  transition: all 0.3s;
+}
+
+.btn-copy-text {
+  display: inline-block;
+  margin: 0 12px;
+  width: 68px;
+}
+
+.btn-copy:hover:not(:disabled) {
+  cursor: pointer;
+}
+
+.btn-copy:disabled .btn-copy-icon {
+  fill: rgba(16, 16, 16, 0.3);
+}
+
+.btn-copyr:hover:disabled {
+  cursor: not-allowed;
+}
+
+.btn-copy:active {
+  top: 2px;
+}
+
+.circle {
+  border: 8px solid transparent;
+  border-radius: 50%;
+  width: 84px;
+  height: 84px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.text {
+  display: inline-block;
+  border: 1px solid #b2bec3;
+  border-radius: 2px;
+  position: absolute;
+  width: 84px;
+  text-align: center;
+  text-transform: uppercase;
+  background: #b2bec3;
+  opacity: 0;
+}
+
 [tooltip] {
   position: relative;
   cursor: default;
 }
+
 [tooltip]:not(:disabled)::before {
   content: attr(tooltip);
   text-transform: capitalize;
@@ -470,8 +485,9 @@ main {
   padding: 10px;
   color: #fff;
   z-index: 1;
-  animation: fade-in 300ms ease;
+  animation: fade-in 150ms ease;
 }
+
 [tooltip]:not(:disabled)::after {
   content: '';
   position: absolute;
@@ -484,19 +500,22 @@ main {
   border: 1px solid black;
   border-color: rgba(39, 39, 39, 1) transparent transparent transparent;
   border-width: 4px 6px 0;
-  animation: fade-in 300ms ease;
+  animation: fade-in 150ms ease;
   z-index: 1;
 }
+
 [tooltip][tooltip-position="bottom"]::before {
   bottom: auto;
   top: calc(100% + 10px);
 }
+
 [tooltip][tooltip-position="bottom"]::after {
   bottom: auto;
   top: calc(100% + 6px);
   border-color: transparent transparent rgba(39, 39, 39, 1);
   border-width: 0 6px 4px;
 }
+
 @keyframes fade-in {
   from {
     opacity: 0;

@@ -1,10 +1,10 @@
 import { getImgData, rgbToHex } from './utils';
 
+import { AllElements } from './interfaces';
+
 function renderPicker(
   event: MouseEvent,
-  canvas: HTMLCanvasElement,
-  circle: HTMLDivElement,
-  hexTextOnHover: HTMLSpanElement,
+  { canvas, circle, hexTextOnHover }: AllElements
 ): void {
   const { x, y, r, g, b } = getImgData(event, canvas);
 

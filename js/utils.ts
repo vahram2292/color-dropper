@@ -48,3 +48,21 @@ export const rgbToHex = (r: number, g: number, b: number): string => {
 
   return `#${int2hex(r)}${int2hex(g)}${int2hex(b)}`;
 }
+
+export const createTimeout = listener => {
+  let id = setTimeout(listener, 700)
+
+  return () => {
+    clearTimeout(id)
+  }
+}
+
+// TODO: may be add general listener
+// export const addListener = selector => eventType => listener => {
+//   let element = document.querySelector(selector)
+//   element.addEventListener(eventType, listener)
+//
+//   return () => {
+//     element.removeEventListener(eventType, listener)
+//   }
+// }

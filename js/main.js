@@ -1,77 +1,59 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const drawImage_1 = require("./drawImage");
-const updateColorShowBlock_1 = require("./updateColorShowBlock");
+const colorSelected_1 = require("./colorSelected");
 const pickColor_1 = require("./pickColor");
 const renderPicker_1 = require("./renderPicker");
-// TODO: fix main (canvas) tooltip
-// TODO: add active state for pick button
-// TODO: create elements collection
+const copyText_1 = require("./copyText");
 // TODO: refactor CSS
-// TODO: refactor HTML
 // TODO: refactor CodeBase (main.ts, go throw all files)
 // TODO: may be add footer
+// TODO: may be add general listener
 function init() {
-    const { container, text, colorShowBox, pickerButton, copyButton, } = _selectElements();
-    const { canvas, circle, hexTextOnHover, } = _createElements();
-    const clickListener = (e) => (0, pickColor_1.default)(e, canvas);
-    const mouseMoveListener = (e) => (0, renderPicker_1.default)(e, canvas, circle, hexTextOnHover);
+    const allElements = Object.assign(Object.assign({}, (_selectElements())), (_createElements()));
+    const { container, circle, canvas, hexTextOnHover, copyButton, pickerBtn, } = allElements;
+    const clickListener = (e) => (0, pickColor_1.default)(e, allElements);
+    const mouseMoveListener = (e) => (0, renderPicker_1.default)(e, allElements);
     container.style.position = 'relative';
     circle.classList.add('circle');
     container.appendChild(circle);
     container.appendChild(hexTextOnHover);
     container.appendChild(canvas);
-    pickerButton.addEventListener('click', () => _startColorPicking(canvas, mouseMoveListener, clickListener));
-    copyButton.addEventListener('click', () => {
-        // copyButton.setAttribute('tooltip', 'Copied!');
-        if (text === null || text === void 0 ? void 0 : text.innerText) {
-            navigator.clipboard.writeText(text.innerText);
-            copyButton.setAttribute('tooltip', 'Copied!');
-            setTimeout(() => {
-                copyButton.removeAttribute('tooltip');
-            }, 1000);
-        }
-    });
-    _addListenersToCanvas(canvas, mouseMoveListener, clickListener, colorShowBox, text, circle, copyButton, hexTextOnHover, container);
+    pickerBtn.addEventListener('click', () => _startColorPicking(mouseMoveListener, clickListener, allElements));
+    copyButton.addEventListener('click', () => (0, copyText_1.default)(allElements));
+    canvas.addEventListener('color-selected', () => _stopColorPicking(mouseMoveListener, clickListener, allElements));
+    canvas.addEventListener('color-selected', (e) => (0, colorSelected_1.default)(e, allElements));
     (0, drawImage_1.default)(canvas);
 }
 function _selectElements() {
-    const container = document.querySelector('#color-picker');
-    const text = document.querySelector('#text');
-    const colorShowBox = document.querySelector('#colored-show-box');
-    const pickerButton = document.querySelector('#picker-button');
-    const copyButton = document.querySelector('#show-box-wrapper');
-    if (text === null || text === void 0 ? void 0 : text.innerText) {
+    const container = document.querySelector('.color-picker-wrapper');
+    const pickerBtn = document.querySelector('.btn-picker');
+    const pickerBtnGlow = document.querySelector('.btn-picker-glow');
+    const copyBtnText = document.querySelector('.btn-copy-text');
+    const copyBtnShowBox = document.querySelector('.btn-copy-color-show-box');
+    const copyButton = document.querySelector('.btn-copy');
+    const mainTag = document.querySelector('main');
+    if (copyBtnText === null || copyBtnText === void 0 ? void 0 : copyBtnText.innerText) {
         copyButton.disabled = true;
     }
-    return { container, text, colorShowBox, pickerButton, copyButton };
+    return { container, copyBtnText, copyBtnShowBox, pickerBtn, pickerBtnGlow, copyButton, mainTag };
 }
 function _createElements() {
     const canvas = document.createElement('canvas');
     const circle = document.createElement('div');
     const hexTextOnHover = document.createElement('span');
-    hexTextOnHover.style.display = 'inline-block';
-    hexTextOnHover.style.border = '1px solid #b2bec3';
-    hexTextOnHover.style.borderRadius = '2px';
-    hexTextOnHover.style.position = 'absolute';
-    hexTextOnHover.style.width = '84px';
-    hexTextOnHover.style.textAlign = 'center';
-    hexTextOnHover.style.textTransform = 'uppercase';
-    hexTextOnHover.style.backgroundColor = '#b2bec3';
-    hexTextOnHover.style.opacity = '0';
+    hexTextOnHover.classList.add('text');
     return { canvas, circle, hexTextOnHover };
 }
-function _startColorPicking(canvas, mouseMoveListener, clickListener) {
+function _startColorPicking(mouseMoveListener, clickListener, { canvas, pickerBtnGlow }) {
     canvas.addEventListener('click', clickListener);
     canvas.addEventListener('mousemove', mouseMoveListener);
+    pickerBtnGlow.classList.add('active');
 }
-function _stopColorPicking(canvas, mouseMoveListener, clickListener) {
+function _stopColorPicking(mouseMoveListener, clickListener, { canvas, pickerBtnGlow }) {
     canvas.removeEventListener('mousemove', mouseMoveListener);
     canvas.removeEventListener('click', clickListener);
-}
-function _addListenersToCanvas(canvas, mouseMoveListener, clickListener, colorShowBox, text, circle, copyButton, hexTextOnHover, container) {
-    canvas.addEventListener('color-selected', () => _stopColorPicking(canvas, mouseMoveListener, clickListener));
-    canvas.addEventListener('color-selected', (e) => (0, updateColorShowBlock_1.default)(e, colorShowBox, text, circle, copyButton, hexTextOnHover, container));
+    pickerBtnGlow.classList.remove('active');
 }
 init();
 //# sourceMappingURL=main.js.map

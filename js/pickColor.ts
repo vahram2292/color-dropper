@@ -1,6 +1,8 @@
 import { getImgData, rgb2hsl } from './utils';
 
-function pickColor(event: MouseEvent, canvas: HTMLCanvasElement): void {
+import { AllElements } from './interfaces';
+
+function pickColor(event: MouseEvent, { canvas }: AllElements): void {
   const { r, g, b } = getImgData(event, canvas);
   const [h, s, l] = rgb2hsl(r, g, b);
 

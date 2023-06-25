@@ -1,33 +1,33 @@
 import drawImage from './drawImage';
-import updateColorShowBlock from './updateColorShowBlock';
+import colorSelected from './colorSelected';
 import pickColor from './pickColor';
 import renderPicker from './renderPicker';
+import copyText from './copyText';
 
+import { AllElements } from './interfaces';
 
-// TODO: fix main (canvas) tooltip
-// TODO: add active state for pick button
-// TODO: create elements collection
 // TODO: refactor CSS
-// TODO: refactor HTML
 // TODO: refactor CodeBase (main.ts, go throw all files)
 // TODO: may be add footer
+// TODO: may be add general listener
 
 function init() {
+  const allElements: AllElements = {
+    ...(_selectElements()),
+    ...(_createElements()),
+  };
   const {
     container,
-    text,
-    colorShowBox,
-    pickerButton,
-    copyButton,
-  } = _selectElements();
-  const {
-    canvas,
     circle,
+    canvas,
     hexTextOnHover,
-  } = _createElements();
+    copyButton,
+    pickerBtn,
+  } = allElements;
 
-  const clickListener = (e: MouseEvent) => pickColor(e, canvas);
-  const mouseMoveListener = (e: MouseEvent) => renderPicker(e, canvas, circle, hexTextOnHover);
+
+  const clickListener = (e: MouseEvent) => pickColor(e, allElements);
+  const mouseMoveListener = (e: MouseEvent) => renderPicker(e, allElements);
 
   container.style.position = 'relative';
   circle.classList.add('circle')
@@ -36,93 +36,72 @@ function init() {
   container.appendChild(hexTextOnHover);
   container.appendChild(canvas);
 
-  pickerButton.addEventListener('click', () => _startColorPicking(canvas, mouseMoveListener, clickListener))
-  copyButton.addEventListener('click', () => {
-    // copyButton.setAttribute('tooltip', 'Copied!');
-
-    if (text?.innerText) {
-      navigator.clipboard.writeText(text.innerText);
-      copyButton.setAttribute('tooltip', 'Copied!');
-
-      setTimeout(() => {
-        copyButton.removeAttribute('tooltip');
-      }, 1000)
-    }
-  })
-  _addListenersToCanvas(canvas, mouseMoveListener, clickListener, colorShowBox, text, circle, copyButton, hexTextOnHover, container);
+  pickerBtn.addEventListener('click', () => _startColorPicking(mouseMoveListener, clickListener, allElements))
+  copyButton.addEventListener('click', () => copyText(allElements))
+  canvas.addEventListener('color-selected', () => _stopColorPicking(mouseMoveListener, clickListener, allElements));
+  canvas.addEventListener('color-selected', (e: CustomEvent) => colorSelected(e, allElements));
 
   drawImage(canvas);
 }
 
 function _selectElements(): {
   container: HTMLDivElement,
-  text: HTMLSpanElement,
-  colorShowBox: HTMLDivElement,
-  pickerButton: HTMLButtonElement,
+  copyBtnText: HTMLSpanElement,
+  copyBtnShowBox: HTMLDivElement,
   copyButton: HTMLButtonElement,
+  pickerBtn: HTMLButtonElement,
+  pickerBtnGlow: HTMLDivElement,
+  mainTag: HTMLElement,
 } {
-  const container: HTMLDivElement = document.querySelector('#color-picker');
-  const text: HTMLSpanElement = document.querySelector('#text');
-  const colorShowBox: HTMLDivElement = document.querySelector('#colored-show-box');
-  const pickerButton: HTMLButtonElement = document.querySelector('#picker-button');
-  const copyButton: HTMLButtonElement = document.querySelector('#show-box-wrapper');
+  const container: HTMLDivElement = document.querySelector('.color-picker-wrapper');
+  const pickerBtn: HTMLButtonElement = document.querySelector('.btn-picker');
+  const pickerBtnGlow: HTMLDivElement = document.querySelector('.btn-picker-glow');
+  const copyBtnText: HTMLSpanElement = document.querySelector('.btn-copy-text');
+  const copyBtnShowBox: HTMLDivElement = document.querySelector('.btn-copy-color-show-box');
+  const copyButton: HTMLButtonElement = document.querySelector('.btn-copy');
+  const mainTag: HTMLElement = document.querySelector('main');
 
-  if (text?.innerText) {
+  if (copyBtnText?.innerText) {
     copyButton.disabled = true;
   }
 
-  return { container, text, colorShowBox, pickerButton, copyButton };
+  return { container, copyBtnText, copyBtnShowBox, pickerBtn, pickerBtnGlow, copyButton, mainTag };
 }
 
-function _createElements(): { canvas: HTMLCanvasElement, circle: HTMLDivElement, hexTextOnHover: HTMLSpanElement, } {
+function _createElements(): {
+  canvas: HTMLCanvasElement,
+  circle: HTMLDivElement,
+  hexTextOnHover: HTMLSpanElement,
+} {
   const canvas: HTMLCanvasElement = document.createElement('canvas');
   const circle: HTMLDivElement = document.createElement('div');
   const hexTextOnHover: HTMLSpanElement = document.createElement('span');
 
-  hexTextOnHover.style.display = 'inline-block';
-  hexTextOnHover.style.border = '1px solid #b2bec3';
-  hexTextOnHover.style.borderRadius = '2px';
-  hexTextOnHover.style.position = 'absolute';
-  hexTextOnHover.style.width = '84px';
-  hexTextOnHover.style.textAlign = 'center';
-  hexTextOnHover.style.textTransform = 'uppercase';
-  hexTextOnHover.style.backgroundColor = '#b2bec3';
-  hexTextOnHover.style.opacity = '0';
+  hexTextOnHover.classList.add('text');
 
   return { canvas, circle, hexTextOnHover };
 }
 
 function _startColorPicking(
-  canvas: HTMLCanvasElement,
   mouseMoveListener,
-  clickListener
+  clickListener,
+  { canvas, pickerBtnGlow }: AllElements,
 ): void {
   canvas.addEventListener('click', clickListener);
   canvas.addEventListener('mousemove', mouseMoveListener);
+
+  pickerBtnGlow.classList.add('active');
 }
 
 function _stopColorPicking(
-  canvas: HTMLCanvasElement,
   mouseMoveListener,
-  clickListener
+  clickListener,
+  { canvas, pickerBtnGlow }: AllElements,
 ): void {
   canvas.removeEventListener('mousemove', mouseMoveListener);
   canvas.removeEventListener('click', clickListener);
-}
 
-function _addListenersToCanvas(
-  canvas: HTMLCanvasElement,
-  mouseMoveListener,
-  clickListener,
-  colorShowBox: HTMLDivElement,
-  text: HTMLSpanElement,
-  circle: HTMLDivElement,
-  copyButton: HTMLButtonElement,
-  hexTextOnHover: HTMLSpanElement,
-  container: HTMLDivElement,
-): void {
-  canvas.addEventListener('color-selected', () => _stopColorPicking(canvas, mouseMoveListener, clickListener));
-  canvas.addEventListener('color-selected', (e: CustomEvent) => updateColorShowBlock(e, colorShowBox, text, circle, copyButton, hexTextOnHover, container));
+  pickerBtnGlow.classList.remove('active');
 }
 
 init();
