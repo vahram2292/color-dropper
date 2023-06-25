@@ -1,6 +1,7 @@
 import { getImgData, rgbToHex } from './utils';
 
 import { AllElements } from './interfaces';
+import { CIRCLE_WIDTH_HALF } from './constants';
 
 function renderPicker(
   event: MouseEvent,
@@ -10,10 +11,10 @@ function renderPicker(
 
   hexTextOnHover.innerText = rgbToHex(r, g, b);
   hexTextOnHover.style.opacity = '1';
-  hexTextOnHover.style.top = y - 72 + 'px';
-  hexTextOnHover.style.left = x - 42 + 'px';
-  circle.style.top = y - 42 + 'px';
-  circle.style.left = x - 42 + 'px';
+  hexTextOnHover.style.top = y - (CIRCLE_WIDTH_HALF + 30) + 'px';
+  hexTextOnHover.style.left = x - CIRCLE_WIDTH_HALF + 'px';
+  circle.style.top = y - CIRCLE_WIDTH_HALF + 'px';
+  circle.style.left = x - CIRCLE_WIDTH_HALF + 'px';
   circle.style.borderColor = `rgb(${r}, ${g}, ${b})`;
 }
 

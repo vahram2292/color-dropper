@@ -5,20 +5,22 @@ const colorSelected_1 = require("./colorSelected");
 const pickColor_1 = require("./pickColor");
 const renderPicker_1 = require("./renderPicker");
 const copyText_1 = require("./copyText");
+// TODO: refactor main ts file
+// TODO: add responsiveness and proper functionality work for mobile
 function init() {
     const allElements = Object.assign(Object.assign({}, (_selectElements())), (_createElements()));
     const { container, circle, canvas, hexTextOnHover, copyButton, pickerBtn, } = allElements;
     const clickListener = (e) => (0, pickColor_1.default)(e, allElements);
     const mouseMoveListener = (e) => (0, renderPicker_1.default)(e, allElements);
-    container.style.position = 'relative';
-    circle.classList.add('circle');
     container.appendChild(circle);
     container.appendChild(hexTextOnHover);
     container.appendChild(canvas);
     pickerBtn.addEventListener('click', () => _startColorPicking(mouseMoveListener, clickListener, allElements));
     copyButton.addEventListener('click', () => (0, copyText_1.default)(allElements));
-    canvas.addEventListener('color-selected', () => _stopColorPicking(mouseMoveListener, clickListener, allElements));
-    canvas.addEventListener('color-selected', (e) => (0, colorSelected_1.default)(e, allElements));
+    canvas.addEventListener('color-selected', (e) => {
+        (0, colorSelected_1.default)(e, allElements);
+        _stopColorPicking(mouseMoveListener, clickListener, allElements);
+    });
     (0, drawImage_1.default)(canvas);
 }
 function _selectElements() {
@@ -29,6 +31,7 @@ function _selectElements() {
     const copyBtnShowBox = document.querySelector('.btn-copy-color-show-box');
     const copyButton = document.querySelector('.btn-copy');
     const mainTag = document.querySelector('main');
+    container.style.position = 'relative';
     if (copyBtnText === null || copyBtnText === void 0 ? void 0 : copyBtnText.innerText) {
         copyButton.disabled = true;
     }
@@ -38,6 +41,7 @@ function _createElements() {
     const canvas = document.createElement('canvas');
     const circle = document.createElement('div');
     const hexTextOnHover = document.createElement('span');
+    circle.classList.add('circle');
     hexTextOnHover.classList.add('text');
     return { canvas, circle, hexTextOnHover };
 }

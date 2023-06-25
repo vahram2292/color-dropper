@@ -6,6 +6,9 @@ import copyText from './copyText';
 
 import { AllElements } from './interfaces';
 
+
+// TODO: refactor main ts file
+// TODO: add responsiveness and proper functionality work for mobile
 function init() {
   const allElements: AllElements = {
     ...(_selectElements()),
@@ -24,8 +27,6 @@ function init() {
   const clickListener = (e: MouseEvent) => pickColor(e, allElements);
   const mouseMoveListener = (e: MouseEvent) => renderPicker(e, allElements);
 
-  container.style.position = 'relative';
-  circle.classList.add('circle')
 
   container.appendChild(circle);
   container.appendChild(hexTextOnHover);
@@ -33,8 +34,10 @@ function init() {
 
   pickerBtn.addEventListener('click', () => _startColorPicking(mouseMoveListener, clickListener, allElements))
   copyButton.addEventListener('click', () => copyText(allElements))
-  canvas.addEventListener('color-selected', () => _stopColorPicking(mouseMoveListener, clickListener, allElements));
-  canvas.addEventListener('color-selected', (e: CustomEvent) => colorSelected(e, allElements));
+  canvas.addEventListener('color-selected', (e: CustomEvent) => {
+    colorSelected(e, allElements);
+    _stopColorPicking(mouseMoveListener, clickListener, allElements);
+  });
 
   drawImage(canvas);
 }
@@ -56,6 +59,8 @@ function _selectElements(): {
   const copyButton: HTMLButtonElement = document.querySelector('.btn-copy');
   const mainTag: HTMLElement = document.querySelector('main');
 
+  container.style.position = 'relative';
+
   if (copyBtnText?.innerText) {
     copyButton.disabled = true;
   }
@@ -72,6 +77,7 @@ function _createElements(): {
   const circle: HTMLDivElement = document.createElement('div');
   const hexTextOnHover: HTMLSpanElement = document.createElement('span');
 
+  circle.classList.add('circle');
   hexTextOnHover.classList.add('text');
 
   return { canvas, circle, hexTextOnHover };
