@@ -3,7 +3,7 @@ function drawImage(canvas: HTMLCanvasElement): void {
     const context = canvas.getContext('2d');
     const img = new Image();
 
-    img.src = './bg.jpg';
+    img.src = 'bg.jpg';
     img.onload = () => _onImageLoad(img, canvas, context);
   }
 }
