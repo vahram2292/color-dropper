@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
+/**
+ * Handel copy color to clipboard functionality.
+ *
+ * @param {AllElements} allElements - An object containing the DOM elements.
+ * @returns {void}
+ */
 function copyText({ copyBtnText, copyButton }) {
     if (copyBtnText === null || copyBtnText === void 0 ? void 0 : copyBtnText.innerText) {
         navigator

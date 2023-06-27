@@ -1,6 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
+/**
+ * Event handler for the 'color-selected' event.
+ *
+ * @param {CustomEvent} event - The 'color-selected' event.
+ * @param {AllElements} elements - The elements involved in the color selection.
+ * @returns {void}
+ */
 function colorSelected(event, { mainTag, copyBtnText, copyBtnShowBox, copyButton, circle, hexTextOnHover }) {
     const { r, g, b } = event.detail;
     const hexText = (0, utils_1.rgbToHex)(r, g, b);

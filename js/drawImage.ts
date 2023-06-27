@@ -1,6 +1,12 @@
 import { CIRCLE_WIDTH_HALF } from './constants';
 import { AllElements } from './interfaces';
 
+/**
+ * Draws an image on the canvas.
+ *
+ * @param {AllElements} elements - The element references.
+ * @returns {void}
+ */
 function drawImage({ canvas }: AllElements): void {
   if (canvas.getContext) {
     const context = canvas.getContext('2d');
@@ -11,6 +17,15 @@ function drawImage({ canvas }: AllElements): void {
   }
 }
 
+/**
+ * Event handler for the image load event.
+ *
+ * @param {HTMLImageElement} img - The loaded image.
+ * @param {HTMLCanvasElement} canvas - The canvas element.
+ * @param {CanvasRenderingContext2D} context - The 2D rendering context of the canvas.
+ * @returns {void}
+ * @private
+ */
 function _onImageLoad(
   img: HTMLImageElement,
   canvas: HTMLCanvasElement,

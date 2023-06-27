@@ -2,6 +2,12 @@ import { createTimeout } from './utils';
 
 import { AllElements } from './interfaces';
 
+/**
+ * Handel copy color to clipboard functionality.
+ *
+ * @param {AllElements} allElements - An object containing the DOM elements.
+ * @returns {void}
+ */
 function copyText({ copyBtnText, copyButton }: AllElements): void {
   if (copyBtnText?.innerText) {
     navigator

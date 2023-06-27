@@ -2,6 +2,13 @@ import { createTimeout, rgbToHex } from './utils';
 
 import { AllElements } from './interfaces';
 
+/**
+ * Event handler for the 'color-selected' event.
+ *
+ * @param {CustomEvent} event - The 'color-selected' event.
+ * @param {AllElements} elements - The elements involved in the color selection.
+ * @returns {void}
+ */
 function colorSelected(
   event: CustomEvent,
   { mainTag, copyBtnText, copyBtnShowBox, copyButton, circle, hexTextOnHover }: AllElements

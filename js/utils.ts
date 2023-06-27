@@ -1,3 +1,11 @@
+/**
+ * Converts an RGB color value to its corresponding HSL representation.
+ *
+ * @param {number} r - The red color value (0-255).
+ * @param {number} g - The green color value (0-255).
+ * @param {number} b - The blue color value (0-255).
+ * @returns {number[]} - The HSL representation of the input color as an array [h, s, l].
+ */
 export const rgb2hsl = (r: number, g: number, b: number): [h: number, s: number, l :number] => {
   r /= 255;
   g /= 255;
@@ -30,7 +38,14 @@ export const rgb2hsl = (r: number, g: number, b: number): [h: number, s: number,
   return [h, s, l];
 }
 
-export const getImgData = (event: MouseEvent, canvas: HTMLCanvasElement):
+/**
+ * Retrieves the RGB color values of a pixel from a canvas based on the coordinates of a mouse event.
+ *
+ * @param {MouseEvent} event - The mouse event.
+ * @param {HTMLCanvasElement} canvas - The canvas element.
+ * @returns {Object} - The coordinates and RGB color values of the pixel as an object { x, y, r, g, b }.
+ */
+export const getRGBPositionData = (event: MouseEvent, canvas: HTMLCanvasElement):
   { x: number, y: number, r: number, g:number, b:number } => {
   const rect = (event.target as Element).getBoundingClientRect();
   const x = event.clientX - rect.left;
@@ -43,6 +58,14 @@ export const getImgData = (event: MouseEvent, canvas: HTMLCanvasElement):
   return { x, y, r, g, b };
 }
 
+/**
+ * Converts RGB color values to a hexadecimal color representation.
+ *
+ * @param {number} r - The red color value (0-255).
+ * @param {number} g - The green color value (0-255).
+ * @param {number} b - The blue color value (0-255).
+ * @returns {string} - The hexadecimal color representation.
+ */
 export const rgbToHex = (r: number, g: number, b: number): string => {
   const int2hex = (num) =>
     (Math.round(num) < 16 ? '0' : '') + Math.round(num).toString(16);
@@ -50,6 +73,12 @@ export const rgbToHex = (r: number, g: number, b: number): string => {
   return `#${int2hex(r)}${int2hex(g)}${int2hex(b)}`;
 }
 
+/**
+ * Creates a timeout that executes a callback function after a specified delay.
+ *
+ * @param {Function} listener - The callback function to be executed.
+ * @returns {Function} - A function that can be called to cancel the timeout.
+ */
 export const createTimeout = (listener: () => void): () => void => {
   let id = setTimeout(listener, 700);
 
